@@ -1,7 +1,7 @@
-const repository = require('../database');
+const { createUserJwtToken, assert } = require('../utility');
 
 const UserController = {
-    async createUser(req, res, { User }) { 
+    async createUser(req, res, { User }) {
         let { name, email, password } = req.body;
 
         // normalize the email
@@ -20,32 +20,29 @@ const UserController = {
 
         await user.save();
 
-        // TO-DO:
-        // implement JWT token creation
+        const token = createUserJwtToken(user);
+        res.cookie('access_token', token, { expire: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE) });
 
-        // TO-DO:
-        // also return the token
-        return {
-            token: '',
-            user
-        };
+        return user;
     },
-    async listUsers(req, res, { User }) { 
+    async listUsers(req, res, { User }) {
         return await User.find({});
     },
-    async fetchUser(req, res, { User }) { 
-        // TO-DO: require jwt token
+    async fetchUser(req, res, { User }) {
+        const { userId } = req.params;
 
-        const { userId } = req.params; 
+        assert(() => userId == req.jwt._id, `Unauthorized to make requests on behalf of user id ${userId}`);
+
         return await User.findOne({
             _id: userId
         });
     },
-    async updateUser(req, res, { User }) { 
-        // TO-DO: require jwt token
-
+    async updateUser(req, res, { User }) {
         const { userId } = req.params;
         const { name, email, password } = req.body;
+
+        assert(() => userId == req.jwt._id, `Unauthorized to make requests on behalf of user id ${userId}`);
+
         const user = await User.findOne({ _id: userId });
         if (!user)
             throw new Error(`User with id ${userId} could not be found.`);
@@ -58,11 +55,13 @@ const UserController = {
 
         return await user.save();
     },
-    async deleteUser(req, res, { User }) { 
-        // TO-DO: require jwt token
+    async deleteUser(req, res, { User }) {
         const { userId } = req.params;
+
+        assert(() => userId == req.jwt._id, `Unauthorized to make requests on behalf of user id ${userId}`);
+
         return await User.deleteOne({
-            _id: userId 
+            _id: userId
         });
     },
 };
