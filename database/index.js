@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const repository = require("./repository");
+const User = require("./models/user.model");
+const Ticket = require("./models/ticket.model");
 
 function startMongoose()
 {
@@ -14,7 +16,8 @@ function startMongoose()
 
     // assign all models to the repository
     Object.assign(repository, {
-
+        User,
+        Ticket
     });
 
     return mongoose;
