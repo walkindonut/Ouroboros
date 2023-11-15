@@ -7,16 +7,16 @@ function api(asyncCallback) {
         try {
             const result = await asyncCallback(req, res, repository);
             res.send(JSON.stringify({
+                success: true,
                 result
             }));
         }
         catch (ex) {
             res.status(500);
             res.send(JSON.stringify({
+                success: false,
                 error: ex.toString()
-                //error: ex.message
             }));
-
             console.error(ex);
         }
     };
@@ -44,6 +44,7 @@ async function jwtAuthorization(req, res, next) {
         res.status(500);
         res.setHeader('content-type', 'application/json');
         res.send(JSON.stringify({
+            success: false,
             error: ex.toString()
         }));
     }
