@@ -1,6 +1,5 @@
-const repository = require("./repository");
-const { userSchema } = require("./schema");
 const mongoose = require("mongoose");
+const repository = require("./repository");
 
 function startMongoose()
 {
@@ -13,7 +12,10 @@ function startMongoose()
     mongoose.pluralize(null); // disable mongo pluralizing collections
     mongoose.connect(uri);
 
-    repository.User = mongoose.model('users', userSchema);
+    // assign all models to the repository
+    Object.assign(repository, {
+
+    });
 
     return mongoose;
 }

@@ -9,7 +9,9 @@ const logger = require('morgan');
 const database = require('./database');
 
 const indexRouter = require('./routes/index.routes');
-const apiRouter = require('./routes/api.routes');
+const userRouter = require('./routes/api.user.routes');
+const authRouter = require('./routes/auth.routes');
+
 const app = express();
 
 app.use(logger('dev'));
@@ -19,15 +21,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/api', apiRouter);
+app.use('/api/users', userRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
