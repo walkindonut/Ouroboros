@@ -1,2 +1,1 @@
-# Ouroboros
-COMP229(Fall2023) - Group project
+# comp229-XYZapp
