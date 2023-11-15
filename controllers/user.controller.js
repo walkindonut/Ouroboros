@@ -1,18 +1,69 @@
+const repository = require('../database');
+
 const UserController = {
-    createUser(req, res) { 
+    async createUser(req, res, { User }) { 
+        let { name, email, password } = req.body;
 
-    },
-    listUsers(req, res) { 
+        // normalize the email
+        email = email.toLowerCase();
 
-    },
-    fetchUser(req, res) { 
+        if (await User.findOne({ email }))
+            throw new Error(`A user with the email ${email} already exists.`);
 
-    },
-    updateUser(req, res) { 
+        const user = new User({
+            email,
+            name,
+            password,
+            created: new Date(),
+            updated: new Date()
+        });
 
+        await user.save();
+
+        // TO-DO:
+        // implement JWT token creation
+
+        // TO-DO:
+        // also return the token
+        return {
+            token: '',
+            user
+        };
     },
-    deleteUser(req, res) { 
-        
+    async listUsers(req, res, { User }) { 
+        return await User.find({});
+    },
+    async fetchUser(req, res, { User }) { 
+        // TO-DO: require jwt token
+
+        const { userId } = req.params; 
+        return await User.findOne({
+            _id: userId
+        });
+    },
+    async updateUser(req, res, { User }) { 
+        // TO-DO: require jwt token
+
+        const { userId } = req.params;
+        const { name, email, password } = req.body;
+        const user = await User.findOne({ _id: userId });
+        if (!user)
+            throw new Error(`User with id ${userId} could not be found.`);
+
+        if (name) user.name = name;
+        if (email) user.email = email;
+        if (password) user.password = password;
+
+        user.updated = new Date();
+
+        return await user.save();
+    },
+    async deleteUser(req, res, { User }) { 
+        // TO-DO: require jwt token
+        const { userId } = req.params;
+        return await User.deleteOne({
+            _id: userId 
+        });
     },
 };
 
