@@ -1,4 +1,5 @@
-public/
+# Only omit the public/ folder in the root directory which is the server
+/public/
 
 # Logs
 logs

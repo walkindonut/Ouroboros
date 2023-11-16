@@ -39,7 +39,7 @@ async function jwtAuthorization(req, res, next) {
         }
         const data = jwt.verify(token, process.env.JWT_SECRET);
         req.jwt = data;
-        return next();
+        next();
     } catch (ex) {
         res.status(500);
         res.setHeader('content-type', 'application/json');
