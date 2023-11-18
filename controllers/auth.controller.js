@@ -1,4 +1,4 @@
-const { createUserJwtToken } = require('../utility');
+const { createUserJwtToken, Assert } = require('../utility');
 
 const AuthController = {
     async signin(req, res, { User }) {
@@ -12,10 +12,7 @@ const AuthController = {
             password: password
         });
 
-        if (!user) {
-            // I took this messsage from ecentennial :-)
-            throw new Error("Login failed! Please recheck the username and password and try again.");
-        }
+        Assert.userSignInExists(user);
 
         const token = createUserJwtToken(user);
         res.cookie('access_token', token, { expire: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE) });

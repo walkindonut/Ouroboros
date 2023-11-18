@@ -1,3 +1,5 @@
+const { Assert } = require("../utility");
+
 const TicketController = {
     async createTicket(req, res, { Ticket }) {
         const ticket = new Ticket(req.body);
@@ -16,22 +18,25 @@ const TicketController = {
     async getTicketById(req, res, { Ticket }) {
         const { id } = req.params;
         const ticket = await Ticket.findById(id);
-        if (!ticket)
-            throw new Error('Ticket not found');
+
+        Assert.ticketExists(ticket);
+
         return ticket;
     },
     async updateTicket(req, res, { Ticket }) {
         const { id } = req.params;
         const ticket = await Ticket.findByIdAndUpdate(id, req.body, { new: true });
-        if (!ticket)
-            throw new Error('Ticket not found');
+
+        Assert.ticketExists(ticket);
+
         return ticket;
     },
     async deleteTicket(req, res, { Ticket }) {
         const { id } = req.params;
         const ticket = await Ticket.findByIdAndDelete(id);
-        if (!ticket)
-            throw new Error('Ticket not found');
+
+        Assert.ticketExists(ticket);
+
         return ticket;
     },
     async deleteAllTickets(req, res, { Ticket }) {

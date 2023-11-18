@@ -1,6 +1,19 @@
 const jwt = require('jsonwebtoken');
 const { repository } = require('./database');
 
+const Assert = {
+    validate(statement, error) {
+        if (!statement())
+            throw new Error(error);
+    },
+    jwtTokenExists: (token) => Assert.validate(() => token, "Unauthorized request"),
+    userSignInExists: (user) => Assert.validate(() => user, "Login failed! Please recheck the username and password and try again."),
+    userEmailExists: (user, email) => Assert.validate(() => !user, `A user with the email ${email} already exists.`),
+    authorizedUserId: (userId, jwtId) => Assert.validate(() => userId == jwtId, `Unauthorized to make requests on behalf of user id ${userId}`),
+    ticketExists: (ticket) => Assert.validate(() => ticket, "Ticket not found"),
+    userExists: (user) => Assert.validate(() => user, "User not found")
+};
+
 function api(asyncCallback) {
     return async (req, res) => {
         res.setHeader('content-type', 'application/json');
@@ -34,9 +47,8 @@ async function jwtAuthorization(req, res, next) {
     const token = req.cookies.access_token;
 
     try {
-        if (!token) {
-            throw new Error("Unauthorized");
-        }
+        Assert.jwtTokenExists(token);
+
         const data = jwt.verify(token, process.env.JWT_SECRET);
         req.jwt = data;
         next();
@@ -50,14 +62,9 @@ async function jwtAuthorization(req, res, next) {
     }
 };
 
-function assert(statement, error) {
-    if (!statement())
-        throw new Error(error);
-}
-
 module.exports = {
     api,
-    assert,
+    Assert,
     jwtSign,
     jwtAuthorization,
     createUserJwtToken,

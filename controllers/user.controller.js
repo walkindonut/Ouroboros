@@ -1,4 +1,4 @@
-const { createUserJwtToken, assert } = require('../utility');
+const { createUserJwtToken, Assert } = require('../utility');
 
 const UserController = {
     async createUser(req, res, { User }) {
@@ -7,8 +7,7 @@ const UserController = {
         // normalize the email
         email = email.toLowerCase();
 
-        if (await User.findOne({ email }))
-            throw new Error(`A user with the email ${email} already exists.`);
+        Assert.userEmailExists(await User.findOne({ email }), email);
 
         const user = new User({
             email,
@@ -31,7 +30,7 @@ const UserController = {
     async fetchUser(req, res, { User }) {
         const { userId } = req.params;
 
-        assert(() => userId == req.jwt._id, `Unauthorized to make requests on behalf of user id ${userId}`);
+        Assert.authorizedUserId(userId);
 
         return await User.findOne({
             _id: userId
@@ -41,11 +40,10 @@ const UserController = {
         const { userId } = req.params;
         const { name, email, password } = req.body;
 
-        assert(() => userId == req.jwt._id, `Unauthorized to make requests on behalf of user id ${userId}`);
+        Assert.authorizedUserId(userId);
 
         const user = await User.findOne({ _id: userId });
-        if (!user)
-            throw new Error(`User with id ${userId} could not be found.`);
+        Assert.userExists(user);
 
         if (name) user.name = name;
         if (email) user.email = email;
@@ -58,7 +56,7 @@ const UserController = {
     async deleteUser(req, res, { User }) {
         const { userId } = req.params;
 
-        assert(() => userId == req.jwt._id, `Unauthorized to make requests on behalf of user id ${userId}`);
+        Assert.authorizedUserId(userId);
 
         return await User.deleteOne({
             _id: userId
