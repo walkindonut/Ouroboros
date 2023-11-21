@@ -22,7 +22,7 @@ function App() {
 </nav>
 
 
-<main> <p>yhuh</p>
+<main> <p>yhuh </p>
 </main>
 
 <footer>
