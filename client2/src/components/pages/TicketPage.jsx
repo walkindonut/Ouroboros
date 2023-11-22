@@ -1,8 +1,9 @@
-import CreateTicket from './forms/CreateTicket';
-import DisplayTickets from './DisplayTickets';
+import CreateTicket from '../forms/CreateTicket';
+import DisplayTickets from '../DisplayTickets';
 
+function TicketPage({ setIsHalf }) {
+    setIsHalf(false);
 
-function TicketPage() {
     return (
         <>
             <div className="mt-3 d-grid gap-2 col-6 mx-auto text-center">
@@ -14,7 +15,6 @@ function TicketPage() {
                 <h5>Current Ticket</h5>
                 <DisplayTickets />
             </div>
-
         </>
     );
 }
