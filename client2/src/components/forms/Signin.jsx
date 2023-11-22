@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Signin() {
     return (
         <form class="m-5">
@@ -15,8 +17,11 @@ function Signin() {
             </div>
 
             <div class="mt-5 d-grid gap-2 col-6 mx-auto">
-                <button class="btn btn-primary" type="button">Sign In</button>
-                <button class="btn btn-primary" type="button">Sign Up</button>
+                <a class="btn btn-primary" type="button">Sign In</a>
+                <div>
+                    <span class="me-1">Need an account?</span>
+                    <Link to="/signup">Sign Up</Link>
+                </div>
             </div>
         </form>
     );

@@ -1,4 +1,4 @@
-import Signin from "../forms/Signin";
+import Signup from "../forms/Signup";
 
 function SigninPage({ setIsHalf }) {
 
@@ -11,10 +11,10 @@ function SigninPage({ setIsHalf }) {
             </div>
 
             <div class="text-center">
-                <h3>Sign In</h3>
+                <h3>Sign Up</h3>
             </div>
 
-            <Signin />
+            <Signup />
         </>
     );
 }

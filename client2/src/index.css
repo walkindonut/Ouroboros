@@ -3,6 +3,11 @@ body {
   overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
+/* No underlined links */
+a {
+  text-decoration: none !important;
+}
+
 /* Show it is fixed to the top */
 #root {
   min-height: 75rem;
