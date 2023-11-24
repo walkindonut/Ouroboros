@@ -1,25 +1,25 @@
 import { Outlet } from "react-router-dom";
 import Nav from "./Nav";
 
-function Layout({ half }) {
+function Layout({ isHalf }) {
     return (
         <>
-            <Nav />
-            <main class="min-vh-100 d-flex flex-column">
-                <div class="row g-0 flex-grow-1">
-                    {half ?
+            <Nav {...{}} />
+            <main className="min-vh-100 d-flex flex-column">
+                <div className="row g-0 flex-grow-1">
+                    {isHalf ?
                         <>
-                            <div class="col-6 bg-leaf">
+                            <div className="col-6 bg-leaf">
                             </div>
-                            <div class="col-6 bg-body-tertiary">
-                                <div class="p-5">
+                            <div className="col-6 bg-body-tertiary">
+                                <div className="p-5">
                                     <Outlet />
                                 </div>
                             </div>
                         </>
                         :
                         <>
-                            <div class="col-12 bg-body-tertiary">
+                            <div className="col-12 bg-body-tertiary">
                                 <Outlet />
                             </div>
                         </>

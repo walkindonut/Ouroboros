@@ -6,7 +6,7 @@ function CreateTicket() {
             </textarea>
 
             <div className="d-grid gap-2 col-6 mx-auto">
-                <button class="btn btn-primary" type="button">Save</button>
+                <button className="btn btn-primary" type="button">Save</button>
             </div>
         </>
     );

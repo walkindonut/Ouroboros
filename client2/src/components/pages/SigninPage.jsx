@@ -1,20 +1,20 @@
 import Signin from "../forms/Signin";
 
-function SigninPage({ setIsHalf }) {
+function SigninPage({ setIsHalf, signInUser }) {
 
     setIsHalf(true);
 
     return (
         <>
-            <div class="text-center">
-                <img src="/images/logo.png" alt="logo" class="logo" />
+            <div className="text-center">
+                <img src="/images/logo.png" alt="logo" className="logo" />
             </div>
 
-            <div class="text-center">
+            <div className="text-center">
                 <h3>Sign In</h3>
             </div>
 
-            <Signin />
+            <Signin { ...{ signInUser } } />
         </>
     );
 }

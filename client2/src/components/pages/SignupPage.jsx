@@ -6,11 +6,11 @@ function SigninPage({ setIsHalf }) {
 
     return (
         <>
-            <div class="text-center">
-                <img src="/images/logo.png" alt="logo" class="logo" />
+            <div className="text-center">
+                <img src="/images/logo.png" alt="logo" className="logo" />
             </div>
 
-            <div class="text-center">
+            <div className="text-center">
                 <h3>Sign Up</h3>
             </div>
 
