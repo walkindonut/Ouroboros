@@ -1,16 +1,16 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { UserContext } from "../../UserContextProvider";
+import { useUserContext } from "../../UserContextProvider";
 
 function Signin({  }) {
 
-    const { signInUser } = useContext(UserContext);
+    const { signInUser } = useUserContext();
 
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('asd@aol.com');
+    const [password, setPassword] = useState('qwerty');
 
     async function signInClick() {
         try {

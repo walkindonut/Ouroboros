@@ -16,6 +16,10 @@ const Assert = {
 
 function api(asyncCallback) {
     return async (req, res) => {
+        //res.setHeader("Access-Control-Allow-Credentials", true);
+        //res.setHeader("Access-Control-Allow-Origin", "*");
+        //res.setHeader('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+        //res.setHeader('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
         res.setHeader('content-type', 'application/json');
         try {
             const result = await asyncCallback(req, res, repository);
@@ -25,12 +29,12 @@ function api(asyncCallback) {
             }));
         }
         catch (ex) {
-            res.status(500);
+            //res.status(500);
             res.send(JSON.stringify({
                 success: false,
                 error: ex.toString()
             }));
-            console.error(ex);
+            //console.error(ex);
         }
     };
 }

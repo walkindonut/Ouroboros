@@ -30,7 +30,7 @@ const UserController = {
     async fetchUser(req, res, { User }) {
         const { userId } = req.params;
 
-        Assert.authorizedUserId(userId);
+        Assert.authorizedUserId(userId, req.jwt._id);
 
         return await User.findOne({
             _id: userId
@@ -40,9 +40,17 @@ const UserController = {
         const { userId } = req.params;
         const { name, email, password } = req.body;
 
-        Assert.authorizedUserId(userId);
+        Assert.authorizedUserId(userId, req.jwt._id);
+
+        email = email ? email.toLowerCase() : '';
 
         const user = await User.findOne({ _id: userId });
+
+        // if not the same email, make sure no conflict
+        if (email && email != user.email) {
+            Assert.userEmailExists(await User.findOne({ email }), email);
+        }
+
         Assert.userExists(user);
 
         if (name) user.name = name;
@@ -56,7 +64,7 @@ const UserController = {
     async deleteUser(req, res, { User }) {
         const { userId } = req.params;
 
-        Assert.authorizedUserId(userId);
+        Assert.authorizedUserId(userId, req.jwt._id);
 
         return await User.deleteOne({
             _id: userId

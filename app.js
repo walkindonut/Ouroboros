@@ -6,7 +6,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const database = require('./database');
+const cors = require('cors');
 
 const indexRouter = require('./routes/index.routes');
 const userRouter = require('./routes/api.user.routes');
@@ -15,6 +15,10 @@ const authRouter = require('./routes/auth.routes');
 
 const app = express();
 
+app.use(cors({ 
+  origin: ["http://localhost:3000", "http://localhost:3001", "*"],
+  credentials: true
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

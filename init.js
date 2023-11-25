@@ -2,7 +2,7 @@ require('dotenv').config();
 const fs = require('fs');
 
 // copy the dist of the client
-fs.cpSync('./client/dist', './public/', { recursive: true });
+fs.cpSync(`./${process.env.CLIENT_DIRECTORY ?? 'client'}/dist`, './public/', { recursive: true });
 
 //
 // sanity check before running the server

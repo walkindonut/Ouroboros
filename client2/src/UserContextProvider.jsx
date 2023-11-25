@@ -1,17 +1,21 @@
-import { useState, useMemo, createContext } from "react";
+import { useState, useMemo, createContext, useContext } from "react";
 import Api from "./api";
 
 const UserContext = createContext({});
+
+function useUserContext() {
+    return useContext(UserContext);
+}
 
 function UserContextProvider({ children }) {
     const [user, setUser] = useState({});
 
     async function signInUser(email, password) {
-        const result = await Api.signin(email, password);
-        if (result.success) {
-            setUser(result.result);
+        const res = await Api.signin(email, password);
+        if (res.success) {
+            setUser(res.result);
         }
-        return result;
+        return res;
     }
 
     async function signOutUser() {
@@ -19,13 +23,21 @@ function UserContextProvider({ children }) {
         setUser({});
     }
 
+    async function updateUser({ name, email, password }) {
+        const res = await Api.updateUser(user._id, {name, email, password});
+        if(res.success) {
+            setUser(res.result);
+        }
+        return res;
+    }
+
     const values = useMemo(() => {
         return {
             user,
             signInUser,
-            signOutUser
+            signOutUser,
+            updateUser
         }
-
     }, [user]);
 
     return (
@@ -35,4 +47,8 @@ function UserContextProvider({ children }) {
     )
 }
 
-export { UserContext, UserContextProvider };
+export {
+    UserContext,
+    UserContextProvider,
+    useUserContext
+};

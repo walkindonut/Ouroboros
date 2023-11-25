@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink, useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { UserContext } from "../UserContextProvider";
+import { useUserContext } from "../UserContextProvider";
 
 function Nav({ }) {
-    const { user, signOutUser } = useContext(UserContext);
+    const { user, signOutUser } = useUserContext();
 
     const isLoggedIn = user._id;
     const navigate = useNavigate();
@@ -41,7 +40,7 @@ function Nav({ }) {
                                     </NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" onClick={signOutClick} >
+                                    <a className="nav-link" href="javascript:void(0)" onClick={signOutClick} >
                                         <FontAwesomeIcon icon={['fas', 'sign-out']} className="me-2" />
                                         <span>Sign Out</span>
                                     </a>
