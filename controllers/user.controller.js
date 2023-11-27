@@ -1,4 +1,4 @@
-const { createUserJwtToken, Assert } = require('../utility');
+const { createUserJwtToken, Assert, hashPassword } = require('../utility');
 
 const UserController = {
     async createUser(req, res, { User }) {
@@ -9,10 +9,13 @@ const UserController = {
 
         Assert.userEmailExists(await User.findOne({ email }), email);
 
+        const { hashedPassword, salt } = await hashPassword(password); // hash password, generate salt
+
         const user = new User({
             email,
             name,
-            password,
+            hashedPassword,
+            salt,
             created: new Date(),
             updated: new Date()
         });
@@ -38,7 +41,7 @@ const UserController = {
     },
     async updateUser(req, res, { User }) {
         const { userId } = req.params;
-        const { name, email, password } = req.body;
+        let { name, email, password } = req.body;
 
         Assert.authorizedUserId(userId, req.jwt._id);
 
@@ -55,7 +58,10 @@ const UserController = {
 
         if (name) user.name = name;
         if (email) user.email = email;
-        if (password) user.password = password;
+        if (password) {
+            const { hashedPassword } = await hashPassword(password, user.salt);
+            user.hashedPassword = hashedPassword;
+        }
 
         user.updated = new Date();
 

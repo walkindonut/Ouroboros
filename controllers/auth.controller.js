@@ -1,4 +1,4 @@
-const { createUserJwtToken, Assert } = require('../utility');
+const { createUserJwtToken, Assert, hashPassword } = require('../utility');
 
 const AuthController = {
     async signin(req, res, { User }) {
@@ -7,10 +7,20 @@ const AuthController = {
         // normalize the email
         email = email.toLowerCase(); 
 
-        const user = await User.findOne({
+        let user = await User.findOne({
             email: email,
-            password: password
         });
+
+        // if we find the user, check their salted password
+        const { hashedPassword } = await hashPassword(password, user.salt);
+        //console.log(password);
+        //console.log(hashedPassword);
+        //console.log(user.hashedPassword);
+
+        if (user && hashedPassword != user.hashedPassword) {
+            // set user to null so the sign in fails
+            user = null;
+        }
 
         Assert.userSignInExists(user);
 

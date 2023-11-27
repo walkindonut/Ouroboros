@@ -40,7 +40,7 @@ function Nav({ }) {
                                     </NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" href="javascript:void(0)" onClick={signOutClick} >
+                                    <a className="nav-link" href={void(0)} onClick={signOutClick} >
                                         <FontAwesomeIcon icon={['fas', 'sign-out']} className="me-2" />
                                         <span>Sign Out</span>
                                     </a>

@@ -44,7 +44,10 @@ const Api = {
         return await Api.call('auth/signout', 'GET');
     },
     updateUser: async (userId, { name, email, password }) => {
-        return await Api.call(`api/users/${userId}`, 'PUT', { name, email, password })
+        return await Api.call(`api/users/${userId}`, 'PUT', { name, email, password });
+    },
+    createUser: async (name, email, password) => {
+        return await Api.call(`api/users/`, 'POST', {name, email, password });
     }
 };
 

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../UserContextProvider";
+import Alert from "../AlertComponent";
 
 
 function Profile() {
     const navigate = useNavigate();
     const { user, updateUser } = useUserContext();
-    console.log(user);
+    //console.log(user);
     
     // go back to home if not logged in
     if (!user._id) {
@@ -30,6 +31,7 @@ function Profile() {
     const [firstName, setFirstName] = useState(_firstName);
     const [lastName, setLastName] = useState(_lastName);
     const [email, setEmail] = useState(user.email);
+    const [alertMessage, setAlertMessage] = useState('');
 
     //console.log(user);
     async function saveClick(){
@@ -38,12 +40,12 @@ function Profile() {
                 name: `${firstName} ${lastName}`,
                 email
             });
-            // TO-DO: error handling
             //console.log(result);
+            setAlertMessage("Information updated.")
         }   
         catch (ex){
             console.log(ex);
-            console.log(`An unexpected error has occured`);
+            setAlertMessage(ex.toString());
         }
     }
 
@@ -71,6 +73,9 @@ function Profile() {
                         <input type="email" className="form-control" id="inputEmail3" value={email} onChange={(e)=>setEmail(e.target.value)} disabled={false}/>
                     </div>
                 </div>
+
+                <Alert message={alertMessage}/>
+
                 <div className="mt-5 d-grid gap-2 col-6 mx-auto">
 
                     <button className="btn btn-primary" type="button" onClick={() => saveClick()}>Save</button>

@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../../UserContextProvider";
+import Alert from "../AlertComponent";
 
 function Signin({  }) {
 
     const { signInUser } = useUserContext();
+
 
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
@@ -25,7 +27,7 @@ function Signin({  }) {
         }
         catch (ex) {
             console.log(ex);
-            setErrorMessage(`An unexpected error has occured`);
+            setErrorMessage(ex.toString());
         }
     }
 
@@ -44,13 +46,7 @@ function Signin({  }) {
                 </div>
             </div>
 
-            {errorMessage && <div className="row mb-2 mt-3">
-                <div className="col-sm-12">
-                    <div className="alert alert-danger" role="alert">
-                        {errorMessage}
-                    </div>
-                </div>
-            </div>}
+            <Alert message={errorMessage}/>
 
             <div className="d-grid gap-2 col-6 mx-auto">
                 <a className="btn btn-primary" type="button" onClick={() => signInClick()}>Sign In</a>

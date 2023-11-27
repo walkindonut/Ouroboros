@@ -24,8 +24,16 @@ function UserContextProvider({ children }) {
     }
 
     async function updateUser({ name, email, password }) {
-        const res = await Api.updateUser(user._id, {name, email, password});
-        if(res.success) {
+        const res = await Api.updateUser(user._id, { name, email, password });
+        if (res.success) {
+            setUser(res.result);
+        }
+        return res;
+    }
+
+    async function createUser(name, email, password) {
+        const res = await Api.createUser(name, email, password);
+        if (res.success) {
             setUser(res.result);
         }
         return res;
@@ -36,7 +44,8 @@ function UserContextProvider({ children }) {
             user,
             signInUser,
             signOutUser,
-            updateUser
+            updateUser,
+            createUser
         }
     }, [user]);
 

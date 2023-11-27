@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { repository } = require('./database');
 
 const Assert = {
@@ -13,6 +14,25 @@ const Assert = {
     ticketExists: (ticket) => Assert.validate(() => ticket, "Ticket not found"),
     userExists: (user) => Assert.validate(() => user, "User not found")
 };
+
+function hashPassword(password, salt) {
+    const N = 1024, r = 8, p = 1;
+    const dkLen = 32;
+    
+    salt = salt ?? crypto.randomBytes(16).toString('base64');
+    
+    return new Promise((resolve, reject) => {
+        crypto.scrypt(password, salt, dkLen, { N, r, p }, (err, derivedKey) => {
+            if (err) 
+                return reject(err);
+
+            const hashedPassword = derivedKey.toString('base64');
+            //console.log('test', hashedPassword, salt);
+        
+            return resolve({ hashedPassword, salt });
+        });
+    });
+}
 
 function api(asyncCallback) {
     return async (req, res) => {
@@ -34,7 +54,7 @@ function api(asyncCallback) {
                 success: false,
                 error: ex.toString()
             }));
-            //console.error(ex);
+            console.error(ex);
         }
     };
 }
@@ -72,4 +92,5 @@ module.exports = {
     jwtSign,
     jwtAuthorization,
     createUserJwtToken,
+    hashPassword
 }
