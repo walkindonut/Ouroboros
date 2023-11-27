@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Profile.css';
 
-function MyForm() {
+function Profile() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -96,8 +96,8 @@ function MyForm() {
             <li><a href="/signin">Sign in</a></li>
           </ul>
         </nav>
-        <h2>YOUR PROFILE</h2>
-        <label htmlFor="email">Email:</label>
+        <center><h2>YOUR PROFILE</h2></center>
+        <center><label htmlFor="email">Email:</label>
         <input
           type="email"
           id="email"
@@ -112,10 +112,10 @@ function MyForm() {
             <button onClick={handleSaveEmail}>Save</button>
             <button onClick={handleCancelEmail}>Cancel</button>
           </div>
-        )}
+        )}</center>
       </div>
       <div>
-        <label htmlFor="password">Password:</label>
+        <center><label htmlFor="password">Password:</label>
         <input
           type="text"
           id="password"
@@ -130,10 +130,10 @@ function MyForm() {
             <button onClick={handleSavePassword}>Save</button>
             <button onClick={handleCancelPassword}>Cancel</button>
           </div>
-        )}
+        )}</center>
       </div>
       <div>
-        <label htmlFor="name">Name:</label>
+        <center><label htmlFor="name">Name:</label>
         <input
           type="text"
           id="name"
@@ -148,9 +148,9 @@ function MyForm() {
             <button onClick={handleSaveName}>Save</button>
             <button onClick={handleCancelName}>Cancel</button>
           </div>
-        )}
+        )}</center>
       </div>
-      <h2>YOUR TICKETS</h2>
+      <center><h2>YOUR TICKETS</h2></center>
       <center><table className="ticket-table">
         <thead>
           <tr>
@@ -181,4 +181,4 @@ function MyForm() {
   );
 }
 
-export default MyForm;
+export default Profile;
